@@ -161,4 +161,4 @@ cython_debug/
 
 # ignore test files
 *.mp3
-*.srt
+/transcriptions/*
