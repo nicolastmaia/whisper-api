@@ -19,7 +19,7 @@ try:
   os.mkdir(output_directory)
 except FileExistsError: 
   ''
-except: 
+except Exception: 
   raise
 
 # read audio as AudioSegment object
