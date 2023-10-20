@@ -1,6 +1,6 @@
+import os
 import whisper
 import numpy as np
-import soundfile as sf
 from pydub import AudioSegment
 from whisper.utils import get_writer
 
@@ -11,7 +11,16 @@ model = whisper.load_model("small")
 audio_path = "audio.mp3"
 
 # path where to save transcription
-output_directory = "."
+output_directory = "./transcriptions"
+
+# try to create output directory
+# if directory already exists, ignore and continue code
+try: 
+  os.mkdir(output_directory)
+except FileExistsError: 
+  ''
+except: 
+  raise
 
 # read audio as AudioSegment object
 audioSegment = AudioSegment.from_file(audio_path)
@@ -25,9 +34,19 @@ result = model.transcribe(data)
 # print transcription on console without line breaks
 print(result["text"])
 
-# get object to write transcription as a srt file
+# build options for  transcription writer objects
+options = {'max_line_width': 500, 'max_line_count':500, "highlight_words": False}
+
+# get objects to write transcription as different files
+txt_writer = get_writer("txt", output_directory)
+json_writer = get_writer("json",  output_directory)
+vtt_writer = get_writer("vtt", output_directory)
+tsv_writer = get_writer("tsv", output_directory)
 srt_writer = get_writer("srt", output_directory)
 
-# save as a SRT file with hard line breaks
-srt_writer(result, audio_path, {'max_line_width': 500, 'max_line_count':500, "highlight_words": False,
-})
+# save transcription in different format files
+txt_writer(result, audio_path, options)
+json_writer(result, audio_path, options)
+vtt_writer(result, audio_path, options)
+tsv_writer(result, audio_path, options)
+srt_writer(result, audio_path, options)
