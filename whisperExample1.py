@@ -9,10 +9,10 @@ def transcribe():
   model = whisper.load_model("small")
 
   # path of the audio file to transcribe
-  audio_path = "audio.mp3"
+  audio_path = "audio2.mp3"
 
   # path where to save transcription
-  output_directory = "./transcriptions"
+  output_directory = "./transcriptions1"
 
   # try to create output directory
   # if directory already exists, ignore and continue code
@@ -23,14 +23,8 @@ def transcribe():
   except Exception: 
     raise
 
-  # read audio as AudioSegment object
-  audioSegment = AudioSegment.from_file(audio_path)
-
-  # convert AudioSegment object to numpy array
-  data = np.frombuffer(audioSegment.raw_data, np.int16).flatten().astype(np.float32) / 32768.0
-
   # transcribe audio by passing audio data as numpy array to the model's 'transcribe' function
-  result = model.transcribe(data)
+  result = model.transcribe(audio_path)
 
   # print transcription on console without line breaks
   print(result["text"])
