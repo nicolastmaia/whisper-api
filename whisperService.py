@@ -20,7 +20,7 @@ async def transcribe(file):
   # data = np.frombuffer(audio, np.int16).flatten().astype(np.float32) / 32768.0
 
   # transcribe audio by passing audio data as numpy array to the model's 'transcribe' function
-	result = model.transcribe(audio)
+	result = model.transcribe(audio, word_timestamps=True)
 
 	return result
 
