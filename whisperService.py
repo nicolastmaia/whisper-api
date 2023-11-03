@@ -8,19 +8,31 @@ from whisper.utils import get_writer
 
 SAMPLE_RATE = 16000
 
-async def transcribe(file):
+async def transcribe(file, model = "small", language = "Portuguese", save_to_srt = False, filename = "transcription1"):
+	
 	print("Starting Transcription")
-  
+	print(f"Using Model: {model}")
+	print(f"Idioma do áudio: {language}")
+	print(f"Salvar transcrição em srt local? {save_to_srt}")
+
+	if(save_to_srt):
+		print(f"Filename to save: {filename}")
+
 	audio  = load_audio(file.file)
 
   # define model to use
-	model = whisper.load_model("small")
-
-  # convert AudioSegment object to numpy array
-  # data = np.frombuffer(audio, np.int16).flatten().astype(np.float32) / 32768.0
+	model = whisper.load_model(model)
 
   # transcribe audio by passing audio data as numpy array to the model's 'transcribe' function
-	result = model.transcribe(audio, word_timestamps=True)
+	result = model.transcribe(audio, word_timestamps=True, language = language)
+
+	if(save_to_srt):
+		audio_path = filename
+		output_directory = "./transcriptions2"
+		options = {'max_line_width': 500, 'max_line_count':500, "highlight_words": False}
+		srt_writer = get_writer("srt", output_directory)
+		srt_writer(result, audio_path, options)
+	
 
 	return result
 
