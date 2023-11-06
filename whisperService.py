@@ -13,7 +13,7 @@ async def transcribe(file, model = "small", language = "Portuguese", save_to_srt
 	print("Starting Transcription")
 	print(f"Using Model: {model}")
 	print(f"Idioma do áudio: {language}")
-	print(f"Salvar transcrição em srt local? {save_to_srt}")
+	print(f"Salvar transcrição em srt local: {save_to_srt}")
 
 	if(save_to_srt):
 		print(f"Filename to save: {filename}")
@@ -28,11 +28,20 @@ async def transcribe(file, model = "small", language = "Portuguese", save_to_srt
 
 	if(save_to_srt):
 		audio_path = filename
-		output_directory = "./transcriptions2"
+		output_directory = "./transcriptions3"
+		
+		# try to create output directory
+		# if directory already exists, ignore and continue code
+		try: 
+			os.mkdir(output_directory)
+		except FileExistsError: 
+			''
+		except Exception: 
+			raise
+		
 		options = {'max_line_width': 500, 'max_line_count':500, "highlight_words": False}
 		srt_writer = get_writer("srt", output_directory)
 		srt_writer(result, audio_path, options)
-	
 
 	return result
 
