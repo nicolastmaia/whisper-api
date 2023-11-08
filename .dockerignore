@@ -1,0 +1,11 @@
+/transcriptions*
+*.mp3
+*.wav
+whisperExample*
+/.vscode
+__pycache__
+.gitignore
+README.md
+Dockerfile
+.dockerignore
+.git
